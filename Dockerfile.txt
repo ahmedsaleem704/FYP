@@ -1,0 +1,16 @@
+# Use a base image with the desired PHP version and a web server (e.g., Apache)
+FROM php:7.4.12-apache
+
+# Enable mod_rewrite
+RUN a2enmod rewrite
+
+# Copy the PHP application files into the container's web directory
+COPY . /var/www/html/
+
+# Change permissions recursively
+RUN chmod -R 777 /var/www/html/
+
+RUN apt-get update && docker-php-ext-install pdo pdo_mysql && docker-php-ext-enable pdo pdo_mysql
+
+RUN echo "post_max_size = 20M" >> /usr/local/etc/php/php.ini
+
